@@ -19,7 +19,7 @@ import { EmployeeProvider } from './contexts/EmployeeContext';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#0088ff',
     },
     secondary: {
       main: '#dc004e',
@@ -37,6 +37,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<Login />} />
             <Route path="/" element={
               <PrivateRoute>
                 <Dashboard />

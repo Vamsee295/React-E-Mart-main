@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, Paper, TextField, Button, Typography, Box, MenuItem } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { Container, Box, TextField, Button, Typography, Paper, Divider } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const validationSchema = yup.object({
   username: yup
@@ -23,12 +26,7 @@ const validationSchema = yup.object({
     .string()
     .oneOf([yup.ref('password'), null], 'Passwords must match')
     .required('Confirm Password is required'),
-  role: yup
-    .string()
-    .required('Role is required'),
 });
-
-const roles = ['admin','employee'];
 
 const Register = () => {
   const navigate = useNavigate();
@@ -41,7 +39,6 @@ const Register = () => {
       email: '',
       password: '',
       confirmPassword: '',
-      role: 'employee',
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -61,95 +58,178 @@ const Register = () => {
   });
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 8 }}>
-        <Paper elevation={3} sx={{ p: 4 }}>
-          <Typography variant="h4" component="h1" gutterBottom align="center">
-            Register
+    <Container maxWidth="lg" sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+      <Paper elevation={3} sx={{ width: '100%', overflow: 'hidden', display: 'flex', borderRadius: 2 }}>
+        {/* Left side - Blue section */}
+        <Box
+          sx={{
+            width: '50%',
+            bgcolor: '#0088ff',
+            color: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            p: 4,
+            position: 'relative',
+          }}
+        >
+          <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 3, textAlign: 'center' }}>
+            EMPLOYEE MANAGEMENT SYSTEM
           </Typography>
+          <Typography variant="h6" sx={{ textAlign: 'center', mb: 6, px: 4 }}>
+            Register an account to join our system and access employee management tools and resources.
+          </Typography>
+          
+          <Button 
+            variant="outlined" 
+            color="inherit" 
+            sx={{ 
+              borderColor: 'white', 
+              borderRadius: 50, 
+              px: 4, 
+              py: 1, 
+              mb: 6,
+              '&:hover': {
+                borderColor: 'white',
+                bgcolor: 'rgba(255, 255, 255, 0.1)'
+              }
+            }}
+            component={Link}
+            to="/login"
+          >
+            Already have an account? Sign in.
+          </Button>
+          
+          <Box sx={{ mt: 'auto' }}>
+            <Typography variant="body2" sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+              Terms of Service • Privacy Policy
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Right side - Register form */}
+        <Box sx={{ width: '50%', p: 5, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <Typography variant="h3" sx={{ mb: 3, fontWeight: 'bold' }}>
+            Signup
+          </Typography>
+
           <form onSubmit={formik.handleSubmit}>
             <TextField
               fullWidth
               id="username"
               name="username"
-              label="Username"
+              placeholder="Username"
+              variant="outlined"
               value={formik.values.username}
               onChange={formik.handleChange}
               error={formik.touched.username && Boolean(formik.errors.username)}
               helperText={formik.touched.username && formik.errors.username}
-              margin="normal"
+              sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 1 }}
             />
+
             <TextField
               fullWidth
               id="email"
               name="email"
-              label="Email"
+              placeholder="Email"
+              variant="outlined"
               value={formik.values.email}
               onChange={formik.handleChange}
               error={formik.touched.email && Boolean(formik.errors.email)}
               helperText={formik.touched.email && formik.errors.email}
-              margin="normal"
+              sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 1 }}
             />
+
             <TextField
               fullWidth
               id="password"
               name="password"
-              label="Password"
               type="password"
+              placeholder="Password"
+              variant="outlined"
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
-              margin="normal"
+              sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 1 }}
             />
+
             <TextField
               fullWidth
               id="confirmPassword"
               name="confirmPassword"
-              label="Confirm Password"
               type="password"
+              placeholder="Confirm Password"
+              variant="outlined"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
               error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
               helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-              margin="normal"
+              sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 1 }}
             />
-            <TextField
-              fullWidth
-              select
-              id="role"
-              name="role"
-              label="Role"
-              value={formik.values.role}
-              onChange={formik.handleChange}
-              error={formik.touched.role && Boolean(formik.errors.role)}
-              helperText={formik.touched.role && formik.errors.role}
-              margin="normal"
-            >
-              {roles.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
-                </MenuItem>
-              ))}
-            </TextField>
+
             <Button
-              color="primary"
-              variant="contained"
               fullWidth
+              variant="contained"
               type="submit"
               disabled={loading}
-              sx={{ mt: 3 }}
+              sx={{
+                bgcolor: '#0088ff',
+                '&:hover': { bgcolor: '#0066cc' },
+                borderRadius: 1,
+                py: 1.5,
+                mb: 3
+              }}
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? 'REGISTERING...' : 'SIGNUP'}
             </Button>
           </form>
-          <Box sx={{ mt: 2, textAlign: 'center' }}>
-            <Button onClick={() => navigate('/login')}>
-              Already have an account? Login
+
+          <Typography variant="body2" sx={{ textAlign: 'center', mb: 2 }}>
+            or signup with
+          </Typography>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Button
+              variant="outlined"
+              sx={{
+                minWidth: 'auto',
+                p: 1,
+                borderRadius: '50%',
+                borderColor: '#ddd',
+                color: '#3b5998'
+              }}
+            >
+              <FacebookIcon />
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                minWidth: 'auto',
+                p: 1,
+                borderRadius: '50%',
+                borderColor: '#ddd',
+                color: '#db4437'
+              }}
+            >
+              <GoogleIcon />
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                minWidth: 'auto',
+                p: 1,
+                borderRadius: '50%',
+                borderColor: '#ddd',
+                color: '#0077b5'
+              }}
+            >
+              <LinkedInIcon />
             </Button>
           </Box>
-        </Paper>
-      </Box>
+        </Box>
+      </Paper>
     </Container>
   );
 };
